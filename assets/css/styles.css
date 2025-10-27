@@ -66,3 +66,39 @@ img {
 .main {
     overflow: hidden;
 }
+
+/* HEADER & NAV */
+.header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: transparent;
+    z-index: var(--z-fixed);
+    transition: background-color .3s;
+}
+
+.nav {
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav__logo {
+    color: var(--white-color);
+    font-family: var(--second-font);
+    font-size: var(--h2-font-size);
+    transition: text-shadow .3s;
+}
+
+.nav__logo:hover {
+    text-shadow: 0 2px 8px var(--first-color);
+}
+
+.nav__toggle,
+.nav__close {
+    display: flex;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
