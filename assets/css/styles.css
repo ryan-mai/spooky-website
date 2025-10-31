@@ -249,3 +249,67 @@ img {
     bottom: 0;
     width: 100%;
 }
+
+/* Misc Animations */
+/* Heartbeat Pulse */
+img {
+    transform: scale(0.5);
+}
+button{
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+
+}
+.heartbeat img {
+    display: block;
+    transform-origin: center center;
+}
+
+.heartbeat {
+	animation: heartbeat 1.5s ease-in-out infinite both;
+    display: inline-block;
+}
+
+/* .heartbeat:hover {
+    animation-duration: 0.5s;
+} */
+
+.heartbeat:hover {
+    animation: flip-horizontal-bottom 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) 0.05s infinite both;
+}
+
+
+@keyframes heartbeat {
+  from {
+    transform: scale(1);
+    transform-origin: center center;
+    animation-timing-function: ease-out;
+  }
+  10% {
+    transform: scale(0.91);
+    animation-timing-function: ease-in;
+  }
+  17% {
+    transform: scale(0.98);
+    animation-timing-function: ease-out;
+  }
+  33% {
+    transform: scale(0.87);
+    animation-timing-function: ease-in;
+  }
+  45% {
+    transform: scale(1);
+    animation-timing-function: ease-out;
+  }
+}
+
+@keyframes flip-vertical-left {
+  0% {
+    transform: rotateX(0);
+  }
+  100% {
+    transform: rotateX(-180deg);
+  }
+}

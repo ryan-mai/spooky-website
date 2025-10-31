@@ -11,12 +11,19 @@
             margin: 20px;
         }
     </style>
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
     <input type="file" id="upload" accept="image/*">
     <br><br>
     <canvas id="output"></canvas>
-
+    <button class="heartbeat">
+        <img src="/assets/img/heart.png" alt="Is it a heart?">
+    </button>
+    <button id="tarot-mystery">
+        <img id="tarot-mystery-card" src="/assets/img/mystery.jpg" alt="What could fortunate tell?">
+    </button>
     <script src="/assets/js/morph.js"></script>
+    <script src="/assets/js/tarot.js"></script>
 </body>
 </html>
