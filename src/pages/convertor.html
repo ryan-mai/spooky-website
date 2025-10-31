@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haunted Image</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>Spooky Website</title>
+    <style>
+        body { text-align: center;}
+        canvas { 
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
-    <main class="main">
-        <section class="morph"></section>
-    </main>
+    <input type="file" id="upload" accept="image/*">
+    <br><br>
+    <canvas id="output"></canvas>
+
+    <script src="/assets/js/morph.js"></script>
 </body>
 </html>

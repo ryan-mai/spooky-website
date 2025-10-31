@@ -12,7 +12,6 @@
       if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const html = await res.text();
 
-      // If the placeholder is inside <head>, append and remove placeholder
       if (el.parentElement && el.parentElement.tagName === 'HEAD') {
         document.head.insertAdjacentHTML('beforeend', html);
         el.remove();
