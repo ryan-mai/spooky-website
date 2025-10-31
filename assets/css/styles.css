@@ -239,3 +239,13 @@ img {
     font-size: var(--small-font-size);
     font-weight: var(--font-medium);
 } */
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
