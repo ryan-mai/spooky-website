@@ -20,6 +20,7 @@ class MorphManager {
         this.timer = null;
         this.autoAnim = null;
         this.isAuto = false;
+        this.isUploaded = false;
 
         this.revealInput = document.getElementById('reveal-value');
 
@@ -35,6 +36,7 @@ class MorphManager {
         if (this.upload) {
             this.upload.addEventListener('change', (e) => {
                 this.fileUpload(e)
+                this.resetIdleTimer(true);
             });
         }
 
@@ -43,7 +45,6 @@ class MorphManager {
                 this.updateOverlay()
                 
                 if (this.revealInput) this.revealInput.value = this.slider.value;
-                this.resetIdleTimer(true);
             });
         }
 
@@ -73,7 +74,8 @@ class MorphManager {
     }
 
     startAuto() {
-
+        if (!this.isUploaded) return;
+        
         if (!this.slider || this.isAuto) return;
         if (Number(this.slider.value) === 100) {
             this.resetIdleTimer();
@@ -133,6 +135,8 @@ class MorphManager {
                 this.centerImg(uploadImg, this.inputCtx, this.size, this.size);
                 this.processImg();
                 this.updateOverlay();
+
+                this.isUploaded = true;
             };
 
             uploadImg.onerror = (err) => console.error(":/", err);
