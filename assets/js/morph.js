@@ -16,6 +16,13 @@ class MorphManager {
         this.upload = document.getElementById('upload');
         this.slider = document.getElementById('reveal');
 
+        this.delay = 2000;
+        this.timer = null;
+        this.autoAnim = null;
+        this.isAuto = false;
+
+        this.revealInput = document.getElementById('reveal-value');
+
         this.init();
     }
 
@@ -26,12 +33,91 @@ class MorphManager {
         this.targetImg.onerror = (e) => console.error('Uh ohhhhhhhhhhhhhhhhhhhh', e); 
 
         if (this.upload) {
-            this.upload.addEventListener('change', (e) => this.fileUpload(e));
+            this.upload.addEventListener('change', (e) => {
+                this.fileUpload(e)
+            });
         }
 
         if (this.slider) {
-            this.slider.addEventListener('input', () => this.updateOverlay());
+            this.slider.addEventListener('input', () => {
+                this.updateOverlay()
+                
+                if (this.revealInput) this.revealInput.value = this.slider.value;
+                this.resetIdleTimer(true);
+            });
         }
+
+        this.attachIdle();
+        this.resetIdleTimer(false);
+    }
+
+    attachIdle() {
+        const onActivity = () => this.resetIdleTimer(true);
+
+        if (this.slider) {
+            this.slider.addEventListener('change', onActivity);
+        }
+
+        if (this.upload) this.upload.addEventListener('change', onActivity);
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) this.stopAuto();
+            onActivity();
+        });
+    }
+
+    resetIdleTimer(stop = false) {
+        if (stop) this.stopAuto();
+        if (this.timer) clearTimeout(this.timer);
+        this.timer = setTimeout(() => this.startAuto(), this.delay);
+    }
+
+    startAuto() {
+
+        if (!this.slider || this.isAuto) return;
+        if (Number(this.slider.value) === 100) {
+            this.resetIdleTimer();
+            return;
+        }
+
+        this.isAuto = true;
+        const startVal = Number(this.slider.value || 0);
+        const endVal = 100;
+        const duration = 4500;
+        const startTime = performance.now();
+
+        const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+        const tick = (now) => {
+            const time = Math.min(1, (now - startTime) / duration);
+            const value = Math.round(startVal + (endVal - startVal) * easeOutCubic(time));
+            this.animateSlider(value);
+            if (time < 1 && this.isAuto) {
+                this.autoAnim = requestAnimationFrame(tick);
+            } else {
+                this.isAuto = false;
+            }
+        };
+
+        this.autoAnim = requestAnimationFrame(tick);
+        }
+
+    stopAuto() {
+        this.isAuto = false;
+        if (this.autoAnim) cancelAnimationFrame(this.autoAnim);
+        this.autoAnim = null;
+    }
+    animateSlider(val) {
+        if (!this.slider) return;
+        let value = Number(val);
+
+        if (value <= 1 && value >= 0) value = Math.round(value * 100);
+        value = Math.max(0, Math.min(100, Math.round(value)))
+        this.slider.value = String(value);
+
+        if (this.revealInput) this.revealInput.value = String(value);
+
+        this.updateOverlay();
     }
 
     fileUpload(e) {
@@ -137,7 +223,7 @@ class MorphManager {
 
         this.overlayCtx.save();
         this.overlayCtx.globalAlpha = revealPercent;
-        this.overlayCtx.globalCompositionOperation = 'source-over';
+        this.overlayCtx.globalCompositeOperation = 'source-over';
         this.overlayCtx.drawImage(this.inputCanvas, 0, 0, this.size, this.size);
         this.overlayCtx.restore();
     }
