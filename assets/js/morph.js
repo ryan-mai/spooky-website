@@ -40,17 +40,33 @@ class MorphManager {
         const reader = new FileReader();
         reader.onload = (ev) => {
             const uploadImg = new Image();
+            uploadImg.onerror = (err) => console.error(":/", err);
+            uploadImg.src = ev.target.result;
+        
             uploadImg.onload = () => {
-                this.inputCtx.clearRect(0, 0, this.size, this.size);
-                this.inputCtx.drawImage(uploadImg, 0, 0, this.size, this.size);
+                this.centerImg(uploadImg, this.inputCtx, this.size, this.size);
                 this.processImg();
                 this.updateOverlay();
             };
+
             uploadImg.onerror = (err) => console.error(":/", err);
             uploadImg.src = ev.target.result;
         };
         reader.onerror = (err) => console.error(":???", err);
         reader.readAsDataURL(file);
+    }
+
+    centerImg(img, ctx, cw, ch) {
+        ctx.clearRect(0, 0, cw, ch);
+        const imgW = img.width;
+        const imgH = img.height;
+
+        const scale = Math.min(cw / imgW, ch / imgH );
+        const dw = Math.round(imgW * scale);
+        const dh = Math.round(imgH * scale);
+        const dx = Math.round((cw - dw) / 2);
+        const dy = Math.round((ch - dh) / 2);
+        ctx.drawImage(img, dx, dy, dw, dh);
     }
 
     processImg() {
@@ -70,6 +86,16 @@ class MorphManager {
         targetCanvas.height = size;
 
         const targetCtx = targetCanvas.getContext('2d', { willReadFrequently: true });
+        const tImg = this.targetImg;
+        const tW = tImg.width;
+        const tH = tImg.height;
+        const tScale = Math.min(tImg / tW, tImg / tH);
+        const tDw = Math.round(tW * tScale);
+        const tDh = Math.round(tH * tScale);
+        const tDx = Math.round((size - tDw) / 2);
+        const tDy = Math.round((size - tDh) / 2);
+
+        targetCtx.clearRect(0, 0, size, size);
         targetCtx.drawImage(this.targetImg, 0, 0, size, size);
         
         const targetData = targetCtx.getImageData(0, 0, size, size);
@@ -79,6 +105,7 @@ class MorphManager {
         const targetPx = targetData.data;
 
         this.getOutput(inputPx, targetPx, size);
+        this.updateOverlay();
     }
 
     getOutput(inputData, targetData, size) {
@@ -101,20 +128,18 @@ class MorphManager {
     updateOverlay() {
         if (!this.overlayCtx || !this.inputCanvas) return;
 
-        const pct = (this.slider ? Number(this.slider.value) : 0) / 100;
-        const visibleW = Math.round(this.size * pct);
+        const pct = (this.slider ? Number(this.slider.value) : 50) / 100;
+        const revealPercent = 1 - pct;
 
         this.overlayCtx.clearRect(0, 0, this.size, this.size);
-        
-        if (visibleW > 0) {
-            this.overlayCtx.drawImage(
-                this.inputCanvas,
-                0, 0,
-                visibleW, this.size,
-                0, 0,
-                visibleW, this.size,
-            );
-        }
+
+        if (revealPercent <= 0) return;
+
+        this.overlayCtx.save();
+        this.overlayCtx.globalAlpha = revealPercent;
+        this.overlayCtx.globalCompositionOperation = 'source-over';
+        this.overlayCtx.drawImage(this.inputCanvas, 0, 0, this.size, this.size);
+        this.overlayCtx.restore();
     }
 
     calcBrightness(inR, inG, inB, tR, tG, tB, intensity = 0.65) {
