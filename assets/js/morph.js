@@ -1,8 +1,20 @@
 class MorphManager {
     constructor() {
-        this.canvas = document.getElementById('output');
-        this.ctx = this.canvas.getContext('2d', { willReadFrequently: true});
+        this.size = 480;
+
+        this.resultCanvas = document.getElementById('result');
+        this.resultCtx = this.resultCanvas.getContext('2d', { willReadFrequently: true});
+        
+        this.overlayCanvas = document.getElementById('original-overlay');
+        this.overlayCtx = this.overlayCanvas && this.overlayCanvas.getContext('2d', { willReadFrequently: true });
+
+        this.inputCanvas = document.createElement('canvas');
+        this.inputCanvas.width = this.size;
+        this.inputCanvas.height = this.size;
+        this.inputCtx = this.inputCanvas.getContext('2d', { willReadFrequently: true});
+        
         this.upload = document.getElementById('upload');
+        this.slider = document.getElementById('reveal');
 
         this.init();
     }
@@ -11,70 +23,98 @@ class MorphManager {
         this.targetImg = new Image();
         this.targetImg.src = '/assets/img/pennywise.jpg';
         this.targetImg.onload = () => console.log("Happy Halloween!!! 🎃 Now be haunted...");
+        this.targetImg.onerror = (e) => console.error('Uh ohhhhhhhhhhhhhhhhhhhh', e); 
 
-        this.upload.addEventListener('change', (e) => {
-            console.log('You have uploaded an image you want haunted... 😈')
-            const file = e.target.files && e.target.files[0];
+        if (this.upload) {
+            this.upload.addEventListener('change', (e) => this.fileUpload(e));
+        }
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const uploadImg = new Image();
-                uploadImg.onload = () => {
-                    this.processImg(uploadImg, this.targetImg);
-                };
-                uploadImg.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
+        if (this.slider) {
+            this.slider.addEventListener('input', () => this.updateOverlay());
+        }
     }
 
-    processImg(inputImg, targetImg) {
-        if (!targetImg.complete) {
-            targetImg.onload = () => {
-                this.processImg(inputImg, targetImg);
+    fileUpload(e) {
+        const file = e.target.files && e.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const uploadImg = new Image();
+            uploadImg.onload = () => {
+                this.inputCtx.clearRect(0, 0, this.size, this.size);
+                this.inputCtx.drawImage(uploadImg, 0, 0, this.size, this.size);
+                this.processImg();
+                this.updateOverlay();
+            };
+            uploadImg.onerror = (err) => console.error(":/", err);
+            uploadImg.src = ev.target.result;
+        };
+        reader.onerror = (err) => console.error(":???", err);
+        reader.readAsDataURL(file);
+    }
+
+    processImg() {
+        if (!this.targetImg.complete) {
+            this.targetImg.onload = () => {
+                this.processImg();
                 return;
             }
         }
 
-        console.log('Preparing to haunt you!!! 👻')
-        const size = 480;
-        this.canvas.width = size;
-        this.canvas.height = size;
+        console.log('Preparing to haunt you!!! 👻');
 
-        this.ctx.drawImage(inputImg, 0, 0, size, size);
-        const inputData = this.ctx.getImageData(0, 0, size, size);
+        const size = this.size;
 
-        this.ctx.drawImage(targetImg, 0, 0, size, size);
-        const targetData = this.ctx.getImageData(0, 0, size, size);
+        const targetCanvas = document.createElement('canvas');
+        targetCanvas.width = size;
+        targetCanvas.height = size;
+
+        const targetCtx = targetCanvas.getContext('2d', { willReadFrequently: true });
+        targetCtx.drawImage(this.targetImg, 0, 0, size, size);
+        
+        const targetData = targetCtx.getImageData(0, 0, size, size);
+        const inputData = this.inputCtx.getImageData(0, 0, size, size);
 
         const inputPx = inputData.data;
         const targetPx = targetData.data;
 
-        this.drawImg(inputPx, targetPx, size, 0.9267);
+        this.getOutput(inputPx, targetPx, size);
     }
 
-    drawImg(inputPx, targetPx, size, intensity = 0.65) {
-        const output = this.ctx.createImageData(size, size);
+    getOutput(inputData, targetData, size) {
+        const output = this.resultCtx.createImageData(size, size);
         const outputData = output.data;
 
-        for (let i = 0; i < targetPx.length; i += 4) {
-            const inR = inputPx[i];            
-            const inG = inputPx[i + 1];            
-            const inB = inputPx[i + 2];            
+        for (let i = 0; i < inputData.length; i += 4) {
+            const inR = inputData[i], inG = inputData[i + 1], inB = inputData[i + 2];
+            const tR = targetData[i], tG = targetData[i + 1], tB = targetData[i + 2];
 
-            const tR = targetPx[i];            
-            const tG = targetPx[i + 1];            
-            const tB = targetPx[i + 2];            
+            const [r, g, b] = this.calcBrightness(inR, inG, inB, tR, tG, tB, 0.92);
 
-            const [r, g, b] = this.calcBrightness(inR, inG, inB, tR, tG, tB, intensity);
-
-            outputData[i] = r;
-            outputData[i + 1] = g;
-            outputData[i + 2] = b;
-            outputData[i + 3] = 255;
+            outputData[i] = r, outputData[i + 1] = g, outputData[i + 2] = b, outputData[i + 3] = 255;
         }
+
+        this.resultCtx.clearRect(0, 0, size, size);
+        this.resultCtx.putImageData(output, 0, 0);
+    }
+
+    updateOverlay() {
+        if (!this.overlayCtx || !this.inputCanvas) return;
+
+        const pct = (this.slider ? Number(this.slider.value) : 0) / 100;
+        const visibleW = Math.round(this.size * pct);
+
+        this.overlayCtx.clearRect(0, 0, this.size, this.size);
         
-        this.ctx.putImageData(output, 0, 0);
+        if (visibleW > 0) {
+            this.overlayCtx.drawImage(
+                this.inputCanvas,
+                0, 0,
+                visibleW, this.size,
+                0, 0,
+                visibleW, this.size,
+            );
+        }
     }
 
     calcBrightness(inR, inG, inB, tR, tG, tB, intensity = 0.65) {
