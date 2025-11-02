@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            padding: 0;
+            margin: 0;
+        }
+
+        main {
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        #eyes, #eyes img {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <main id="anchor">
+        <img src="/assets/img/annabelle.png" alt="A very creepy doll">
+        <div id="eyes">
+            <img class="eye" src="/assets/img/eye.png" alt="eye" style="top: -47px;left: 37.5px;">
+            <img class="eye" src="/assets/img/eye.png" alt="eye" style="top: -47px;left: -19.5px;">
+        </div>
+    </main>
+
+    <script src="/assets/js/eyetrack.js"></script>
+</body>
+</html>
