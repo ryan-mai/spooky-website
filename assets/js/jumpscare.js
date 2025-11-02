@@ -1,18 +1,47 @@
 class JumpscareManager {
     constructor() {
-        this.init();
         this.index = 1;
+        this.delay = 1000;
+        this.isClickable = true;
+        this.lastIdx = 7;
+        
+        this.init();
     }
 
     init() {
         window.addEventListener('click', () => {
+            if (!this.isClickable) return;
             this.changeBg();
         });
     }
 
     changeBg() {
-        document.body.style.backgroundImage = `url("/assets/img/jumpscare/scene_${this.index}.webp")`;
+        this.isClickable = false;
         this.index += 1;
+        document.body.style.backgroundImage = `url("/assets/img/jumpscare/scene_${this.index}.webp")`;
+
+        if (this.index >= this.lastIdx - 3) {
+            if (this.index === this.lastIdx - 3 || this.index === this.lastIdx - 2) {
+                setTimeout(() => {
+                    this.changeBg();
+                }, this.delay);
+            }
+            
+            if (this.index === this.lastIdx - 1) {
+                this.isClickable = true;
+            }
+            
+            if (this.index === this.lastIdx) {
+                setTimeout(() => {
+                    window.location.href = "/src/pages/index.html"
+                }, this.delay);
+            }
+        }
+        if (this.index < this.lastIdx - 3){
+            setTimeout(() => {
+            this.isClickable = true;
+            }, this.delay);
+        }
     }
 }
 
