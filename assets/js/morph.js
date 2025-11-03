@@ -24,6 +24,8 @@ class MorphManager {
 
         this.revealInput = document.getElementById('reveal-value');
 
+        this.morphAudio = new Audio('/assets/audio/morph.mp3');
+
         this.init();
     }
 
@@ -137,6 +139,9 @@ class MorphManager {
                 this.updateOverlay();
 
                 this.isUploaded = true;
+
+                this.morphAudio.currentTime = 0;
+                this.morphAudio.play();
             };
 
             uploadImg.onerror = (err) => console.error(":/", err);

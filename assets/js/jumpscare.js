@@ -4,13 +4,27 @@ class JumpscareManager {
         this.delay = 500;
         this.isClickable = true;
         this.lastIdx = 7;
-        
+
+        this.hasStartedLoop = false;
+        this.jumpscareLoop = new Audio("/assets/audio/jumpscare_loop.mp3");
+        this.jumpscareLoop.loop = true;
+
+        this.indexAudio = new Audio("/assets/audio/index.mp3");
+        this.indexAudio.loop = true;
+
         this.init();
     }
 
     init() {
         window.addEventListener('click', () => {
             if (!this.isClickable) return;
+
+            if (!this.hasStartedLoop) {
+                this.hasStartedLoop = true;
+                this.jumpscareLoop.currentTime = 0;
+                this.jumpscareLoop.play().catch((err) => { console.error(err) });
+            }
+
             this.changeBg();
         });
     }
@@ -26,23 +40,34 @@ class JumpscareManager {
                     this.changeBg();
                 }, this.delay * 2);
             }
-            
+
             if (this.index === this.lastIdx - 1) {
                 this.isClickable = true;
             }
-            
+
             if (this.index === this.lastIdx) {
                 setTimeout(() => {
-                    const audio = new Audio("/assets/audio/index.mp3");
-                    audio.play();
-                    window.location.href = "/src/pages/index.html";
+                    try {
+                        this.jumpscareLoop.pause();
+                        this.jumpscareLoop.currentTime = 0;
+                    } catch (e) {}
 
+                    this.indexAudio.currentTime = 0;
+                    this.indexAudio.loop = true;
+                    this.indexAudio.play().catch(() => { /* autoplay blocked */ });
+
+                    const navigate = () => {
+                        window.location.href = '/src/pages/index.html';
+                    };
+
+                    setTimeout(navigate, this.delay * 3);
                 }, this.delay * 2);
             }
         }
+
         if (this.index < this.lastIdx - 3){
             setTimeout(() => {
-            this.isClickable = true;
+                this.isClickable = true;
             }, this.delay);
         }
     }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- <link rel="stylesheet" href="/assets/css/styles.css"> -->
     <style>
         body {
             background-color: #000;
@@ -25,6 +26,38 @@
     </style>
 </head>
 <body>
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">
+                Spooky Skeletons
+            </a>
+            
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="../pages/convertor.html" class="nav__link">Spooky Image!</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="../pages/jumpscare.html" class="nav__link">Childhood Nightmare...</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="../pages/error.html" class="nav__link">DO NOT ENTER!</a>
+                    </li>
+                </ul>
+
+                <div class="nav__close" id="nav-close">
+                    <i class="ri-close-line"></i>
+                </div>
+            </div>
+
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="ri-apps-2-line"></i>
+            </div>
+        </nav>
+    </header>
+
     <main id="anchor">
         <img src="/assets/img/annabelle.png" alt="A very creepy doll">
         <div id="eyes">
@@ -32,6 +65,16 @@
             <img class="eye" src="/assets/img/eye.png" alt="eye" style="top: -47px;left: -19.5px;">
         </div>
     </main>
+
+    <footer class="footer">
+        <div class="footer__container">
+            <p class="footer__text">Website haunted by ghosts 👻</p>
+            <ul class="footer__socials">
+                <li><a href="https://github.com/ryan-mai" class="footer__link">Github</a></li>
+                <li><a href="https://ryanmai.lol/" class="footer__link">Portfolio</a></li>
+            </ul>
+        </div>
+    </footer>
 
     <script src="/assets/js/eyetrack.js"></script>
 </body>

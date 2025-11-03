@@ -71,7 +71,7 @@ img {
 .header {
     position: fixed;
     width: 100%;
-    top: 0;
+    top: 50;
     left: 0;
     background: transparent;
     z-index: var(--z-fixed);
