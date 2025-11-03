@@ -1,0 +1,33 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/"
+  to = "/src/pages/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/convertor"
+  to = "/src/pages/convertor.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/eyes"
+  to = "/src/pages/eyes.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/jumpscare"
+  to = "/src/pages/jumpscare.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/error"
+  to = "/src/pages/error.html"
+  status = 200
+  force = true
