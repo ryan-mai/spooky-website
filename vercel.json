@@ -1,0 +1,12 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/src/pages/index.html" },
+    { "source": "/convertor", "destination": "/src/pages/convertor.html" },
+    { "source": "/eyes", "destination": "/src/pages/eyes.html" },
+    { "source": "/jumpscare", "destination": "/src/pages/jumpscare.html" },
+    { "source": "/error", "destination": "/src/pages/error.html" },
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/src/(.*)", "destination": "/src/$1" }
+  ]
+}
