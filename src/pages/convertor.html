@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
-    <input type="file" id="upload" accept="image/*">
     <br><br>
     <div class="morph-wrap" style="position:relative; width:480px; height:480px; margin:auto;">
         <canvas id="result" width="480" height="480" style="display:block;"></canvas>
         <canvas id="original-overlay" width="480" height="480" style="position: absolute; left: 0; top: 0; pointer-events: none; background: transparent; margin: 0; border: 0;"></canvas>
         <input id="reveal" class="canvas-slider" type="range" min="0" max="100" value="0" aria-label="Blend original and transformed">
+        <input type="file" id="upload" accept="image/*">
     </div>
 
     <button class="heartbeat">

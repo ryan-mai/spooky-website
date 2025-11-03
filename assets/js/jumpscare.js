@@ -1,7 +1,7 @@
 class JumpscareManager {
     constructor() {
         this.index = 1;
-        this.delay = 1000;
+        this.delay = 500;
         this.isClickable = true;
         this.lastIdx = 7;
         
@@ -24,7 +24,7 @@ class JumpscareManager {
             if (this.index === this.lastIdx - 3 || this.index === this.lastIdx - 2) {
                 setTimeout(() => {
                     this.changeBg();
-                }, this.delay);
+                }, this.delay * 2);
             }
             
             if (this.index === this.lastIdx - 1) {
@@ -33,8 +33,11 @@ class JumpscareManager {
             
             if (this.index === this.lastIdx) {
                 setTimeout(() => {
-                    window.location.href = "/src/pages/index.html"
-                }, this.delay);
+                    const audio = new Audio("/assets/audio/index.mp3");
+                    audio.play();
+                    window.location.href = "/src/pages/index.html";
+
+                }, this.delay * 2);
             }
         }
         if (this.index < this.lastIdx - 3){

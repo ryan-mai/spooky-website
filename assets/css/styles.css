@@ -42,11 +42,6 @@
     color: var(--white-color);
 }
 
-html, body {
-    cursor: url('../img/cursors/bat.cur'), auto;
-    height: 100%;
-}
-
 ul {
     list-style: none;
 }
@@ -368,4 +363,13 @@ canvas {
     border: none;
     border-radius: 50%;
     cursor: pointer;
+}
+
+#ghost {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  background: url('/assets/img/cursor/ghost.png') center/contain no-repeat;
+  pointer-events: none;
+  transition: transform 0.1s linear;
 }
