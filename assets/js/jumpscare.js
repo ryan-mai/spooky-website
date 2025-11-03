@@ -47,4 +47,4 @@ class JumpscareManager {
 
 document.addEventListener('DOMContentLoaded', () => {
     new JumpscareManager;
-})
+});

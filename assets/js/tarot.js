@@ -27,4 +27,4 @@ class TarotManager {
 
 document.addEventListener('DOMContentLoaded', () => {
     new TarotManager();
-})
+});

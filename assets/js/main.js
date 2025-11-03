@@ -25,6 +25,7 @@
   }));
 
   initNav();
+  buttonPress();
 })();
 
 
@@ -55,4 +56,12 @@ function initNav() {
     };
 
     navLinks.forEach(n => n.addEventListener('click', linkAction));
+}
+
+function buttonPress() {
+  const btn = document.getElementById('home-button');
+  const sound = new Audio("/assets/audio/button.mp3")
+  btn.addEventListener('click', () => {
+    sound.play();
+  });
 }

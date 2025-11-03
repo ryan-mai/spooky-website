@@ -17,8 +17,8 @@ class eyeManager {
 
             const eyes = document.querySelectorAll('.eye')
             eyes.forEach(eye => {
-                eye.style.transform = `rotate(${180 +angle}deg)`
-            })
+                eye.style.transform = `rotate(${180 +angle}deg)`;
+            });
         });
     }
 
@@ -33,4 +33,4 @@ class eyeManager {
 
 document.addEventListener('DOMContentLoaded', () => {
     new eyeManager();
-})
+});
