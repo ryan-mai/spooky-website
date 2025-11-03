@@ -13,7 +13,7 @@ class TarotManager {
     }
 
     async randomCard() {
-        const base = '/assets/img/tarot/';
+        const base = '../../assets/img/tarot/';
         const cards = ['ace_of_pumpkins', 'fool', 'four_of_bats', 'magician', 'three_of_imps', 'two_of_ghost', 'draw_card']
 
         const idx = Math.floor(Math.random() * cards.length);

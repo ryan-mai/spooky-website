@@ -6,10 +6,10 @@ class JumpscareManager {
         this.lastIdx = 7;
 
         this.hasStartedLoop = false;
-        this.jumpscareLoop = new Audio("/assets/audio/jumpscare_loop.mp3");
+        this.jumpscareLoop = new Audio("../../assets/audio/jumpscare_loop.mp3");
         this.jumpscareLoop.loop = true;
 
-        this.indexAudio = new Audio("/assets/audio/index.mp3");
+        this.indexAudio = new Audio("../../assets/audio/index.mp3");
         this.indexAudio.loop = true;
 
         this.init();
@@ -32,7 +32,7 @@ class JumpscareManager {
     changeBg() {
         this.isClickable = false;
         this.index += 1;
-        document.body.style.backgroundImage = `url("/assets/img/jumpscare/scene_${this.index}.webp")`;
+        document.body.style.backgroundImage = `url("../../assets/img/jumpscare/scene_${this.index}.webp")`;
 
         if (this.index >= this.lastIdx - 3) {
             if (this.index === this.lastIdx - 3 || this.index === this.lastIdx - 2) {

@@ -24,14 +24,14 @@ class MorphManager {
 
         this.revealInput = document.getElementById('reveal-value');
 
-        this.morphAudio = new Audio('/assets/audio/morph.mp3');
+        this.morphAudio = new Audio('../../assets/audio/morph.mp3');
 
         this.init();
     }
 
     init() {
         this.targetImg = new Image();
-        this.targetImg.src = '/assets/img/pennywise.jpg';
+        this.targetImg.src = '../../assets/img/pennywise.jpg';
         this.targetImg.onload = () => console.log("Happy Halloween!!! 🎃 Now be haunted...");
         this.targetImg.onerror = (e) => console.error('Uh ohhhhhhhhhhhhhhhhhhhh', e); 
 

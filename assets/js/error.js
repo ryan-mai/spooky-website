@@ -9,7 +9,7 @@ document.addEventListener('mousemove', e => {
 
 document.addEventListener('click', () => {
     const pick = options[Math.floor(Math.random() * options.length)]
-    ghost.style.background = `url(/assets/img/cursor/${pick}.png)`;
+    ghost.style.background = `url(../../assets/img/cursor/${pick}.png)`;
     ghost.style.backgroundRepeat = 'no-repeat';
     ghost.style.backgroundSize = 'contain';
     ghost.style.backgroundPosition = 'center';
@@ -34,7 +34,7 @@ setInterval(() => {
 }, 1000);
 
 const annabelle = document.getElementById('annabelle');
-const scaryAudio = new Audio('/assets/audio/button.mp3');
+const scaryAudio = new Audio('../../assets/audio/button.mp3');
 
 function randomDoll() {
     if (!annabelle) return;
